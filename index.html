@@ -24,7 +24,7 @@
             background-color: grey;
             color: white;
             width: 100%;
-            height: 70px;
+            height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -120,20 +120,14 @@
                 
             </form>
             <div class="content">
-                <h2>London GB</h2>
-                <h5>Coordinate:</h5>
-                <h5>Sunrise</h5>
-                <h5>Sunset</h5>
-                <h5>temp: </h5>
-                <h5>pressure: </h5>
-                <h5>humidity: </h5>
-
+   
             </div>
         </div>
     </div>
 
     <script>
         const form = document.querySelector('form')
+        const content = document.querySelector('.content')
 
         form.addEventListener('click', () => {
             form.style.border = '1px solid #93c5fd'
@@ -163,12 +157,34 @@
             }
         })
 
-        const setWeather = (data, input) => {
-            const content = document.querySelector('.content')
-            const country = document.createElement('h1')
-            country.textContent = ``
 
-            console.log(data.sys.sunrise)
+        const setWeather = (data, input) => {
+
+            content.innerHTML = " "
+        
+            const country = document.createElement('h2')
+            country.textContent = `${input} ${data.sys.country}`
+            const coordinate = document.createElement('h5')
+            coordinate.textContent = `Coordinate: long${data.coord.lon} lat${data.coord.lat} `
+            const sunrise = document.createElement('h5')
+            sunrise.textContent = `Sunrise: ${data.sys.sunrise}`
+            const sunset = document.createElement('h5')
+            sunset.textContent = `Sunset: ${data.sys.sunset}`
+            const temp = document.createElement('h5')
+            temp.textContent = `Temperature: ${data.main.temp}K`
+            const pressure = document.createElement('h5')
+            pressure.textContent = `Pressure: ${data.main.pressure}`
+            const humidity = document.createElement('h5')
+            humidity.textContent = `Humidity: ${data.main.humidity}`
+
+            content.appendChild(country)
+            content.appendChild(coordinate)
+            content.appendChild(sunrise)
+            content.appendChild(sunset)
+            content.appendChild(temp)
+            content.appendChild(pressure)
+            content.appendChild(humidity)
+            
         }
 
     </script>
