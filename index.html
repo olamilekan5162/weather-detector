@@ -134,6 +134,7 @@
 
     <script>
         const form = document.querySelector('form')
+
         form.addEventListener('click', () => {
             form.style.border = '1px solid #93c5fd'
             form.style.boxShadow = '0 0 10px #bfdbfe'
@@ -146,33 +147,28 @@
             }
         })
 
-        const input = document.querySelector('input').value
-        const content = document.querySelector('.content')
-        URL = `http://api.openweathermap.org/data/2.5/weather?q=london&appid=04f82635af6c780294154adccd7bce45`
-
-        const getWeather = async () => {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault()
+            const input = document.querySelector('input').value.toLowerCase()
             try{
-                const weather  = await fetch(URL)
+                const weather  = await fetch('http://api.openweathermap.org/data/2.5/weather?q='+ input +'&appid=04f82635af6c780294154adccd7bce45')
                 if (!weather) {
                     throw new Error(`could not fetch the weather parameter of ${input} at the moment, try again later`)
                 }
                 const data = await weather.json()
-                setWeather(data)
-
+                setWeather(data, input)
             }
-            catch(e){
+            catch (e) {
                 alert(e)
             }
-        }
+        })
 
-        getWeather()
+        const setWeather = (data, input) => {
+            const content = document.querySelector('.content')
+            const country = document.createElement('h1')
+            country.textContent = ``
 
-        const setWeather = (data) => {
-            search = document.querySelector('button')
-            search.addEventListener('click', () => {
-                console.log(data.sys.coord)
-            })
-
+            console.log(data.sys.sunrise)
         }
 
     </script>
