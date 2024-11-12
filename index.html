@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Detector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .header {
+            background-color: grey;
+            color: white;
+            width: 100%;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main {
+            margin: 40px 0;
+            border: 1px solid gray;
+            width: 70%;
+            height: 100vh;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: row;
+            width: 70%;
+            height: fit-content;
+            border: 1px solid grey;
+            border-radius: 2px;
+        }
+
+        form .input {
+            width: 95%;
+            border-right: 1px solid grey;
+        }
+
+        input {
+            width: 100%;
+            height: 100%;
+            outline: none;
+            border: none;
+            padding: 5px;
+        }
+
+        form .button {
+            width: 5%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button:hover {
+            background-color: #f1f5f9;
+        }
+
+        button {
+            background-color: transparent;
+            color: none;
+            outline: none;
+            border: none;
+        }
+
+        img {
+            width: 25px;
+            height: auto;
+
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            color: #27272a;
+            margin-top: 10px;
+            width: 70%;
+            gap: 5px;
+        }
+
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>WEATHER DETECTOR</h1>
+        </div>
+        <div class="main">
+            <form action="/">
+                <div class="input">
+                    <input type="text" name="search" id="search" placeholder="Search">
+                </div>
+                <div class="button">
+                    <button type="submit" id="submit">
+                        <img src="icons8-search.svg" alt="search-icon">
+                    </button>
+                </div>
+                
+            </form>
+            <div class="content">
+                <h2>London GB</h2>
+                <h5>Coordinate:</h5>
+                <h5>Sunrise</h5>
+                <h5>Sunset</h5>
+                <h5>temp: </h5>
+                <h5>pressure: </h5>
+                <h5>humidity: </h5>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.querySelector('form')
+        form.addEventListener('click', () => {
+            form.style.border = '1px solid #93c5fd'
+            form.style.boxShadow = '0 0 10px #bfdbfe'
+        })
+
+        document.addEventListener('click', (e) =>{
+            if (e.target !== form && !form.contains(e.target)){
+                form.style.border = '1px solid gray'
+                form.style.boxShadow = '0 0 0'
+            }
+        })
+
+        const input = document.querySelector('input').value
+        const content = document.querySelector('.content')
+        URL = `http://api.openweathermap.org/data/2.5/weather?q=london&appid=04f82635af6c780294154adccd7bce45`
+
+        const getWeather = async () => {
+            try{
+                const weather  = await fetch(URL)
+                if (!weather) {
+                    throw new Error(`could not fetch the weather parameter of ${input} at the moment, try again later`)
+                }
+                const data = await weather.json()
+                setWeather(data)
+
+            }
+            catch(e){
+                alert(e)
+            }
+        }
+
+        getWeather()
+
+        const setWeather = (data) => {
+            search = document.querySelector('button')
+            search.addEventListener('click', () => {
+                console.log(data.sys.coord)
+            })
+
+        }
+
+    </script>
+</body>
+</html>
