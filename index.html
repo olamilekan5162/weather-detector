@@ -110,7 +110,7 @@
         <div class="main">
             <form action="/">
                 <div class="input">
-                    <input type="text" name="search" id="search" placeholder="Search">
+                    <input type="text" name="search" id="search" placeholder="Enter a country name...">
                 </div>
                 <div class="button">
                     <button type="submit" id="submit">
@@ -147,14 +147,13 @@
             if (input){
                 try {
                     const weather  = await fetch('http://api.openweathermap.org/data/2.5/weather?q='+ input +'&appid=04f82635af6c780294154adccd7bce45')
-                    if (!weather) {
-                        throw new Error(`could not fetch the weather parameter of ${input} at the moment, try again later`)
+                    if (!weather.ok) {
+                        throw new Error(`could not fetch the weather parameter of ${input}, try again or enter a valid country name`)
                     }
                     const data = await weather.json()
-                    setWeather(data, input)
+                    setWeather(data)
                 }
                 catch (e) {
-                    console.error(e)
                     alert(e)
                 }
             }else {
@@ -164,13 +163,15 @@
         })
             
 
-        const setWeather = (data, input) => {
+        const setWeather = (data) => {
             content.innerHTML = " "
 
             const country = document.createElement('h2')
-            country.textContent = `${input} ${data.sys.country}`
+            country.textContent = `${data.name} ${data.sys.country}`
             const coordinate = document.createElement('h5')
             coordinate.textContent = `Coordinate: long ${data.coord.lon} lat ${data.coord.lat} `
+            const weather = document.createElement('h5')
+            weather.textContent = `Weather: ${data.weather[0].description} `
             const sunrise = document.createElement('h5')
             sunrise.textContent = `Sunrise: ${data.sys.sunrise}`
             const sunset = document.createElement('h5')
@@ -184,6 +185,7 @@
 
             content.appendChild(country)
             content.appendChild(coordinate)
+            content.appendChild(weather)
             content.appendChild(sunrise)
             content.appendChild(sunset)
             content.appendChild(temp)
