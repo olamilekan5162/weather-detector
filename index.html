@@ -146,7 +146,7 @@
             input = document.querySelector('input').value.toLowerCase()
             if (input){
                 try {
-                    const weather  = await fetch('http://api.openweathermap.org/data/2.5/weather?q='+ input +'&appid=04f82635af6c780294154adccd7bce45')
+                    const weather  = await fetch('https://api.openweathermap.org/data/2.5/weather?q='+ input +'&appid=04f82635af6c780294154adccd7bce45')
                     if (!weather.ok) {
                         throw new Error(`could not fetch the weather parameter of ${input}, try again or enter a valid country name`)
                     }
