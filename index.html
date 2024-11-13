@@ -143,29 +143,34 @@
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault()
-            const input = document.querySelector('input').value.toLowerCase()
-            try{
-                const weather  = await fetch('http://api.openweathermap.org/data/2.5/weather?q='+ input +'&appid=04f82635af6c780294154adccd7bce45')
-                if (!weather) {
-                    throw new Error(`could not fetch the weather parameter of ${input} at the moment, try again later`)
+            input = document.querySelector('input').value.toLowerCase()
+            if (input){
+                try {
+                    const weather  = await fetch('http://api.openweathermap.org/data/2.5/weather?q='+ input +'&appid=04f82635af6c780294154adccd7bce45')
+                    if (!weather) {
+                        throw new Error(`could not fetch the weather parameter of ${input} at the moment, try again later`)
+                    }
+                    const data = await weather.json()
+                    setWeather(data, input)
                 }
-                const data = await weather.json()
-                setWeather(data, input)
+                catch (e) {
+                    console.error(e)
+                    alert(e)
+                }
+            }else {
+                alert('You must enter a country name')
             }
-            catch (e) {
-                alert(e)
-            }
-        })
 
+        })
+            
 
         const setWeather = (data, input) => {
-
             content.innerHTML = " "
-        
+
             const country = document.createElement('h2')
             country.textContent = `${input} ${data.sys.country}`
             const coordinate = document.createElement('h5')
-            coordinate.textContent = `Coordinate: long${data.coord.lon} lat${data.coord.lat} `
+            coordinate.textContent = `Coordinate: long ${data.coord.lon} lat ${data.coord.lat} `
             const sunrise = document.createElement('h5')
             sunrise.textContent = `Sunrise: ${data.sys.sunrise}`
             const sunset = document.createElement('h5')
@@ -186,7 +191,6 @@
             content.appendChild(humidity)
             
         }
-
     </script>
 </body>
 </html>
